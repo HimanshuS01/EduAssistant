@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.codingblocks.customnavigationdrawer.BatchModel;
 
@@ -28,7 +29,7 @@ public class BatchTable{
     public static final String CMD_CREATE_TABLE =
             " CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( "
                     + ID + " INTEGER PRIMARY KEY , "
-                    + NAME + " TEXT , "
+                    + NAME + " TEXT"
                     + " );";
 
     public static ArrayList<BatchModel> getByArg (SQLiteDatabase db) {
@@ -43,7 +44,7 @@ public class BatchTable{
                 null
         );
         c.moveToFirst();
-        while (! c.isAfterLast()) {
+        while (! c.moveToNext()) {
             batches.add(new BatchModel(
                     c.getInt(c.getColumnIndexOrThrow(ID)),
 
@@ -53,28 +54,7 @@ public class BatchTable{
         c.close();
         return batches;
     }
-//    public static Expense getById (SQLiteDatabase db, long id) {
-//        Cursor c = db.query(
-//                TABLE_NAME,
-//                PROJECTION,
-//                ID + "=" + id,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//        c.moveToFirst();
-//        Expense exp = new Expense(
-//                c.getInt(c.getColumnIndexOrThrow(ID)),
-//                c.getDouble(c.getColumnIndexOrThrow(AMOUNT)),
-//                c.getLong(c.getColumnIndexOrThrow(TIMESTAMP)),
-//                c.getString(c.getColumnIndexOrThrow(DESC)),
-//                c.getString(c.getColumnIndexOrThrow(TYPE))
-//        );
-//        c.close();
-//        return exp;
-//    }
-//
+
     public static int deleteById (SQLiteDatabase db,int id) {
         try {
             return db.delete(
@@ -87,25 +67,6 @@ public class BatchTable{
             return 0;
         }
     }
-//
-//    public static int update (SQLiteDatabase db, Expense exp) {
-//        try {
-//            ContentValues cv = new ContentValues();
-//            cv.put(AMOUNT, exp.getAmount());
-//            cv.put(TIMESTAMP, exp.getTimestamp());
-//            cv.put(DESC, exp.getDesc());
-//            cv.put(TYPE, exp.getType());
-//            return db.update(
-//                    TABLE_NAME,
-//                    cv,
-//                    ID + "=" + exp.getId(),
-//                    null
-//            );
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//            return 0;
-//        }
-//    }
 
     public static long save (SQLiteDatabase db, BatchModel batch) {
         ContentValues cv = new ContentValues();
