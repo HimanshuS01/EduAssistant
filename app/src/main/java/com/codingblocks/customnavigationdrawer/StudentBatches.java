@@ -34,7 +34,7 @@ public class StudentBatches extends Fragment {
     List<String> dataList;
     ArrayAdapter<String> adapter;
     BatchModel batchModel;
-    static int batch_count=0;
+    static int batch_count = 0;
 
     public StudentBatches() {
         // Required empty public constructor
@@ -43,24 +43,6 @@ public class StudentBatches extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SQLiteDatabase db=MyDatabase.getInstance(getActivity()).getReadableDatabase();
-//        db.beginTransaction();
-        ArrayList<BatchModel> batches_list=BatchTable.getByArg(db);
-        Log.i("database",batches_list.size()+"");
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-        if(batches_list.size()==0){
-
-        }
-        else{
-            dataList=new ArrayList<>();
-            for(int i=0;i<batches_list.size();i++){
-                dataList.add(batches_list.get(i).getBatch_name());
-            }
-            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
-            batches_list_view.setAdapter(adapter);
-        }
-
     }
 
     @Override
@@ -69,6 +51,21 @@ public class StudentBatches extends Fragment {
 
         batches_list_view = (ListView) rootView.findViewById(R.id.Batches_List_View);
         dataList = new ArrayList<>();
+        final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getReadableDatabase();
+        ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
+        db.close();
+        Log.i("database", batches_list.size() + "");
+        if (batches_list.size() == 0) {
+
+        } else {
+            dataList = new ArrayList<>();
+            for (int i = 0; i < batches_list.size(); i++) {
+                dataList.add(batches_list.get(i).getBatch_name());
+            }
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
+            batches_list_view.setAdapter(adapter);
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setBackgroundDrawable(getResources().getDrawable(R.drawable.plus_icon));
@@ -94,13 +91,11 @@ public class StudentBatches extends Fragment {
                         dataList.add(m_Text);
                         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
                         batches_list_view.setAdapter(adapter);//After this step you should be able to see the data in your list view.
-                        batchModel=new BatchModel(m_Text);
-                        //batch_count++;
-                        SQLiteDatabase db= MyDatabase.getInstance(getActivity()).getWritableDatabase();
-//                        db.beginTransaction();
-                        BatchTable.save(db,batchModel);
-//                        db.setTransactionSuccessful();
-//                        db.endTransaction();
+                        batchModel = new BatchModel(batch_count, m_Text);
+                        batch_count++;
+                        SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getWritableDatabase();
+                        BatchTable.save(db, batchModel);
+                        db.close();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -123,6 +118,8 @@ public class StudentBatches extends Fragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getWritableDatabase();
+                        BatchTable.deleteById(db,position);
                         dataList.remove(dataList.get(position));
                         adapter.notifyDataSetChanged();
                     }
@@ -137,6 +134,7 @@ public class StudentBatches extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), StudentListRecyclerView.class);
+                intent.putExtra("Batch_ID",position);
                 startActivity(intent);
             }
         });

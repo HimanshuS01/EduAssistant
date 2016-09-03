@@ -98,8 +98,6 @@ public class StudentTable{
         cv.put(USER_NAME, student.getUser_name());
 
 
-      //  cv.put(EXP_ID, ExpenseTable.save(db, rf.getExpense()));
-
         return db.insert(
                 TABLE_NAME,
                 null,

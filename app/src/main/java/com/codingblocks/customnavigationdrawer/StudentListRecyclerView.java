@@ -2,6 +2,7 @@ package com.codingblocks.customnavigationdrawer;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,8 @@ public class StudentListRecyclerView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list_recycler_view);
+        Intent intent=getIntent();
+        int batch_id=intent.getIntExtra("Batch_ID",0);
 
 
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
@@ -77,12 +80,14 @@ public class StudentListRecyclerView extends AppCompatActivity {
                 user_id.setInputType(InputType.TYPE_CLASS_TEXT);
                 user_id.setHint("User Id");
                 layout.addView(user_id);
+
                 builder.setView(layout);
 
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

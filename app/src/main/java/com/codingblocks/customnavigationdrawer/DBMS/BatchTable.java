@@ -43,8 +43,8 @@ public class BatchTable{
                 null,
                 null
         );
-        c.moveToFirst();
-        while (! c.moveToNext()) {
+        //c.moveToFirst();
+        while (c.moveToNext()) {
             batches.add(new BatchModel(
                     c.getInt(c.getColumnIndexOrThrow(ID)),
 
@@ -57,11 +57,7 @@ public class BatchTable{
 
     public static int deleteById (SQLiteDatabase db,int id) {
         try {
-            return db.delete(
-                    TABLE_NAME,
-                    ID + "=" + id,
-                    null
-            );
+            return db.delete(TABLE_NAME, ID + "=" + id, null);
         } catch (NullPointerException e) {
             e.printStackTrace();
             return 0;
@@ -73,10 +69,6 @@ public class BatchTable{
         cv.put(ID,batch.getId());
         cv.put(NAME,batch.getBatch_name());
 
-        return db.insert(
-                TABLE_NAME,
-                null,
-                cv
-        );
+        return db.insert(TABLE_NAME, null,cv);
     }
 }
