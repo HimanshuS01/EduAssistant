@@ -8,17 +8,17 @@
     <string name="drawer_close">Close</string>
 
     <string name="nav_item_home">Home</string>
-    <string name="nav_item_friends">Friends</string>
-    <string name="nav_item_notifications">Messages</string>
+    <string name="nav_item_students_batches">Student Batches</string>
+    <string name="nav_item_notes_sharing">Notes Sharing</string>
     
     
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
-        <item>@string/nav_item_friends</item>
-        <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_students_batches</item>
+        <item>@string/nav_item_notes_sharing</item>
     </string-array>
 
-    <string name="title_messages">Messages</string>
-    <string name="title_friends">Friends</string>
+    <string name="title_student_batches">Batches</string>
+    <string name="title_notes_sharing">Notes</string>
     <string name="title_home">Home</string>
 </resources>
