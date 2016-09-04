@@ -6,10 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.codingblocks.customnavigationdrawer.DBMS.BatchTable;
 import com.codingblocks.customnavigationdrawer.DBMS.MyDatabase;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,6 @@ public class StudentBatches extends Fragment {
         final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getReadableDatabase();
         ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
         db.close();
-        //Log.i("database", batches_list.size() + "");
         if (batches_list== null) {
 
         }
@@ -70,9 +67,10 @@ public class StudentBatches extends Fragment {
             batches_list_view.setAdapter(adapter);
         }
 
+        FloatingActionButton fab = new FloatingActionButton.Builder(getActivity())
+                .setBackgroundDrawable(R.drawable.fab)
+                .build();
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setBackgroundDrawable(getResources().getDrawable(R.drawable.plus_icon));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +83,7 @@ public class StudentBatches extends Fragment {
 
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setHint("Batch Name");
                 builder.setView(input);
 
                 // Set up the buttons

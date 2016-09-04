@@ -61,6 +61,7 @@ public class StudentListRecyclerView extends AppCompatActivity {
         batch_id = intent.getIntExtra("Batch_ID", 0);
         Log.i("BatchID", batch_id + "");
         refresh();
+
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setBackgroundDrawable(R.drawable.fab)
                         //.setContentView(icon)
