@@ -45,6 +45,7 @@ public class StudentModel {
     {
         this.id=id;
         this.student_name=student_name;
+        this.user_name=user_name;
         this.batch_id=batch_id;
     }
 

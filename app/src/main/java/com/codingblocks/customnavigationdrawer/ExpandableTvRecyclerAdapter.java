@@ -9,25 +9,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ms.square.android.expandabletextview.ExpandableTextView;
+
 import java.util.List;
 
 /**
- * Created by HIman$hu on 9/3/2016.
+ * Created by HIman$hu on 9/4/2016.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
+public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<ExpandableTvRecyclerAdapter.RecyclerViewHolder> {
+
     Context context;
     LayoutInflater inflater;
-    List<String> student_names_list;
+    CourseDescription courseDescription;
 
-    public RecyclerAdapter(Context context,List<String> student_names_list) {
+    public ExpandableTvRecyclerAdapter(Context context,CourseDescription courseDescription) {
         this.context = context;
         inflater=LayoutInflater.from(context);
-        this.student_names_list=student_names_list;
+        this.courseDescription=courseDescription;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = inflater.inflate(R.layout.item_list, parent, false);
+        View v = inflater.inflate(R.layout.couses_list, parent, false);
         RecyclerViewHolder viewHolder = new RecyclerViewHolder(v);
         return viewHolder;
     }
@@ -35,13 +38,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
 
-        holder.tv1.setText(student_names_list.get(position));
-        holder.tv1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, holder.tv1.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.expandableTextView.setText("jbdjdhfjdfjdbfhdbfjdbfhdbhgfbdhbhfbhhgshdbhsdhs");
+         holder.expandableTextView.setText(courseDescription.obj.toString()+"hbhbhbhvhgvghvmhvbv hvhvjhbnv bghvvhvhbvghjgv");//+"\n"
+//                +courseDescription.obj.get(position).getDesc().toString());
+//        holder.expandableTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context, holder.tv1.getText().toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -59,19 +64,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     @Override
     public int getItemCount() {
-        return student_names_list.size();
+//        return 0;
+        return courseDescription.obj.size();
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
+        ExpandableTextView expandableTextView;
         TextView tv1;
         ImageView imageView;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
+            expandableTextView = (ExpandableTextView) itemView.findViewById(R.id.expand_text_view);
 
-            tv1 = (TextView) itemView.findViewById(R.id.student_name_text_view);
-            imageView = (ImageView) itemView.findViewById(R.id.list_avatar);
         }
     }
+
 }
+
+
+
+

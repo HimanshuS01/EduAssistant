@@ -31,7 +31,8 @@ public class StudentBatches extends Fragment {
 
     String m_Text;
     ListView batches_list_view;
-    List<String> dataList;
+    List<String> dataList1;
+    List<String> dataList2;
     ArrayAdapter<String> adapter;
     BatchModel batchModel;
     static int batch_count = 0;
@@ -50,19 +51,22 @@ public class StudentBatches extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
 
         batches_list_view = (ListView) rootView.findViewById(R.id.Batches_List_View);
-        dataList = new ArrayList<>();
+        dataList1 = new ArrayList<>();
+        dataList2 = new ArrayList<>();
+
         final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getReadableDatabase();
         ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
         db.close();
-        Log.i("database", batches_list.size() + "");
-        if (batches_list.size() == 0) {
+        //Log.i("database", batches_list.size() + "");
+        if (batches_list== null) {
 
-        } else {
-            dataList = new ArrayList<>();
+        }
+        else {
+            dataList1 = new ArrayList<>();
             for (int i = 0; i < batches_list.size(); i++) {
-                dataList.add(batches_list.get(i).getBatch_name());
+                dataList1.add(batches_list.get(i).getBatch_name());
             }
-            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList1);
             batches_list_view.setAdapter(adapter);
         }
 
@@ -88,8 +92,8 @@ public class StudentBatches extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
-                        dataList.add(m_Text);
-                        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList);
+                        dataList2.add(m_Text);
+                        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList2);
                         batches_list_view.setAdapter(adapter);//After this step you should be able to see the data in your list view.
                         batchModel = new BatchModel(batch_count, m_Text);
                         batch_count++;
@@ -119,8 +123,8 @@ public class StudentBatches extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getWritableDatabase();
-                        BatchTable.deleteById(db,position);
-                        dataList.remove(dataList.get(position));
+                        BatchTable.deleteById(db, position);
+                        dataList2.remove(dataList2.get(position));
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -134,7 +138,7 @@ public class StudentBatches extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), StudentListRecyclerView.class);
-                intent.putExtra("Batch_ID",position);
+                intent.putExtra("Batch_ID", position);
                 startActivity(intent);
             }
         });

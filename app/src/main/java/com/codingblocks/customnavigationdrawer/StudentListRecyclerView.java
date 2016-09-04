@@ -1,8 +1,10 @@
 package com.codingblocks.customnavigationdrawer;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,24 +21,46 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.codingblocks.customnavigationdrawer.DBMS.BatchTable;
+import com.codingblocks.customnavigationdrawer.DBMS.MyDatabase;
+import com.codingblocks.customnavigationdrawer.DBMS.StudentTable;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class StudentListRecyclerView extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    String Username,UserId;
+    static int student_count = 0;
+    StudentModel studentModel;
+    ArrayList<StudentModel> student_list;
+    List<String> data_list;
+    List<String> user_id_list;
+    RecyclerAdapter adapter;
+    int batch_id;
+    ProgressDialog progressDialog;
+    public static String UserNames = "";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list_recycler_view);
-        Intent intent=getIntent();
-        int batch_id=intent.getIntExtra("Batch_ID",0);
 
+        user_id_list = new ArrayList<>();
 
+        Intent intent = getIntent();
+        batch_id = intent.getIntExtra("Batch_ID", 0);
+        Log.i("BatchID", batch_id + "");
+        refresh();
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setBackgroundDrawable(R.drawable.fab)
                         //.setContentView(icon)
@@ -45,11 +70,11 @@ public class StudentListRecyclerView extends AppCompatActivity {
 
         ImageView ItemIconOne = new ImageView(this);
         ItemIconOne.setImageDrawable(getDrawable(R.drawable.add_student));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50,50);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50, 50);
 
         ImageView ItemIconTwo = new ImageView(this);
         ItemIconTwo.setImageDrawable(getDrawable(R.drawable.analyse));
-        SubActionButton button1 = itemBuilder.setContentView(ItemIconOne).setLayoutParams(new FrameLayout.LayoutParams(250,250)).build();
+        SubActionButton button1 = itemBuilder.setContentView(ItemIconOne).setLayoutParams(new FrameLayout.LayoutParams(250, 250)).build();
         SubActionButton button2 = itemBuilder.setContentView(ItemIconTwo).build();
 
         FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
@@ -62,9 +87,9 @@ public class StudentListRecyclerView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(StudentListRecyclerView.this);
-                builder.setTitle("Add new  Student and its id");
+                builder.setTitle("Add new Student and its UserId");
 
-                LinearLayout layout=new LinearLayout(StudentListRecyclerView.this);
+                LinearLayout layout = new LinearLayout(StudentListRecyclerView.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 // Set up the input
                 final EditText user_name = new EditText(StudentListRecyclerView.this);
@@ -87,7 +112,12 @@ public class StudentListRecyclerView extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        studentModel = new StudentModel(student_count, user_name.getText().toString(), user_id.getText().toString(), batch_id);
+                        student_count++;
+                        final SQLiteDatabase db = MyDatabase.getInstance(StudentListRecyclerView.this).getWritableDatabase();
+                        StudentTable.save(db, studentModel);
+                        db.close();
+                        refresh();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -101,11 +131,86 @@ public class StudentListRecyclerView extends AppCompatActivity {
             }
         });
 
-        RecyclerAdapter adapter = new RecyclerAdapter(this);
-        recyclerView=(RecyclerView)findViewById(R.id.student_list_recycler_view);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowProgressDialog();
+                for (int i = 0; i < user_id_list.size(); i++) {
+                    UserNames = UserNames + user_id_list.get(i).toString() + ",";
+                }
 
+                CourseDescription courseDescription=new CourseDescription();
+                String name="hgdhdfbjdbfjdfb";
+                String desc="bvchvbhcvbhcbnc nhvbchb bcbvhbcn bbfhdbjsnchjsbdbcbsjdbcjdbfbhvhjbfdfbvhbdv";
+                courseDescription.obj.add(new CourseDetail(name,desc));
+//                courseDescription.obj.setDesc("bvchvbhcvbhcbnc nhvbchb bcbvhbcn bbfhdbjsnchjsbdbcbsjdbcjdbfbhvhjbfdfbvhbdv");
+                Intent intent=new Intent();
+                intent.setClass(StudentListRecyclerView.this,ExpandTextView.class);
+                intent.putExtra("Course_Description", courseDescription);
+                startActivity(intent);
+
+                Log.i("UserNames", UserNames);
+                final Call<CourseDescription> course_description = ApiClient.getInterface().getDetails(UserNames);
+                course_description.enqueue(new Callback<CourseDescription>() {
+                    @Override
+                    public void onResponse(Call<CourseDescription> call, Response<CourseDescription> response) {
+                        if (response.isSuccessful()) {
+                            CourseDescription courseDescription = response.body();
+                            Log.i("CourseDetails", courseDescription.toString());
+
+                            Intent intent=new Intent();
+                            intent.setClass(StudentListRecyclerView.this,ExpandTextView.class);
+                            intent.putExtra("Course_Description", courseDescription);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(StudentListRecyclerView.this, response.code() + response.message(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CourseDescription> call, Throwable t) {
+                        Toast.makeText(StudentListRecyclerView.this, "You are not connected to Internet", Toast.LENGTH_LONG).show();
+                    }
+                });
+                DismissProgressDialog();
+            }
+        });
+    }
+
+    private void ShowProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(StudentListRecyclerView.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.setMessage("Analysing common interest of student..");
+        progressDialog.show();
+    }
+
+    private void DismissProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void refresh() {
+        data_list = new ArrayList<>();
+        final SQLiteDatabase db = MyDatabase.getInstance(StudentListRecyclerView.this).getReadableDatabase();
+        student_list = StudentTable.getByArg(db, batch_id);
+        if (student_list == null) {
+
+        } else {
+            for (int i = 0; i < student_list.size(); i++) {
+                data_list.add(student_list.get(i).getStudent_name());
+                user_id_list.add(student_list.get(i).getUser_name());
+            }
+            adapter = new RecyclerAdapter(this, data_list);
+            recyclerView = (RecyclerView) findViewById(R.id.student_list_recycler_view);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+
+        }
     }
 }
