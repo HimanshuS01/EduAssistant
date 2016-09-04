@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".StudentListRecyclerView" />
-        <activity android:name=".ExpandTextView"></activity>
+        <activity android:name=".ExpandTextView" />
+        <activity android:name=".SpeechToText.STT"></activity>
+        <activity android:name=".SpeechToText.SttDisplay"></activity>
     </application>
 
 </manifest>

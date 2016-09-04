@@ -2,6 +2,7 @@ package com.codingblocks.customnavigationdrawer;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,12 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
 
     Context context;
     LayoutInflater inflater;
-    CourseDescription courseDescription;
+    List<CourseDescription> courseDetail;
 
-    public ExpandableTvRecyclerAdapter(Context context,CourseDescription courseDescription) {
-        this.context = context;
+    public ExpandableTvRecyclerAdapter(ExpandTextView context, List<CourseDescription> courseDescription) {
+        this.context=context;
         inflater=LayoutInflater.from(context);
-        this.courseDescription=courseDescription;
+        this.courseDetail=courseDescription;
     }
 
     @Override
@@ -38,15 +39,19 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
 
-//        holder.expandableTextView.setText("jbdjdhfjdfjdbfhdbfjdbfhdbhgfbdhbhfbhhgshdbhsdhs");
-         holder.expandableTextView.setText(courseDescription.obj.toString()+"hbhbhbhvhgvghvmhvbv hvhvjhbnv bghvvhvhbvghjgv");//+"\n"
-//                +courseDescription.obj.get(position).getDesc().toString());
+        Log.i("ABC",courseDetail.get(position).getDesc().toString());
+        holder.expandableTextView.setText(courseDetail.get(position).getName()+"\n"+courseDetail.get(position).getDesc());
 //        holder.expandableTextView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                Toast.makeText(context, holder.tv1.getText().toString(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -62,17 +67,9 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
     };
 
 
-    @Override
-    public int getItemCount() {
-//        return 0;
-        return courseDescription.obj.size();
-    }
-
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         ExpandableTextView expandableTextView;
-        TextView tv1;
-        ImageView imageView;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);

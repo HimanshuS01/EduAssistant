@@ -24,21 +24,26 @@ import android.widget.Toast;
 import com.codingblocks.customnavigationdrawer.DBMS.BatchTable;
 import com.codingblocks.customnavigationdrawer.DBMS.MyDatabase;
 import com.codingblocks.customnavigationdrawer.DBMS.StudentTable;
+import com.google.gson.Gson;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class StudentListRecyclerView extends AppCompatActivity {
 
     RecyclerView recyclerView;
+
     static int student_count = 0;
     StudentModel studentModel;
     ArrayList<StudentModel> student_list;
@@ -47,7 +52,9 @@ public class StudentListRecyclerView extends AppCompatActivity {
     RecyclerAdapter adapter;
     int batch_id;
     ProgressDialog progressDialog;
-    public static String UserNames = "";
+    public String UserNames;
+    List<CourseDescription> details;
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -57,7 +64,7 @@ public class StudentListRecyclerView extends AppCompatActivity {
 
         user_id_list = new ArrayList<>();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         batch_id = intent.getIntExtra("Batch_ID", 0);
         Log.i("BatchID", batch_id + "");
         refresh();
@@ -83,6 +90,14 @@ public class StudentListRecyclerView extends AppCompatActivity {
                 .addSubActionView(button2)
                 .attachTo(actionButton)
                 .build();
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,45 +150,48 @@ public class StudentListRecyclerView extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                UserNames = "";
                 ShowProgressDialog();
                 for (int i = 0; i < user_id_list.size(); i++) {
                     UserNames = UserNames + user_id_list.get(i).toString() + ",";
                 }
 
-                CourseDescription courseDescription=new CourseDescription();
-                String name="hgdhdfbjdbfjdfb";
-                String desc="bvchvbhcvbhcbnc nhvbchb bcbvhbcn bbfhdbjsnchjsbdbcbsjdbcjdbfbhvhjbfdfbvhbdv";
-                courseDescription.obj.add(new CourseDetail(name,desc));
-//                courseDescription.obj.setDesc("bvchvbhcvbhcbnc nhvbchb bcbvhbcn bbfhdbjsnchjsbdbcbsjdbcjdbfbhvhjbfdfbvhbdv");
-                Intent intent=new Intent();
-                intent.setClass(StudentListRecyclerView.this,ExpandTextView.class);
-                intent.putExtra("Course_Description", courseDescription);
-                startActivity(intent);
+//                CourseDescription courseDescription=new CourseDescription();
+//                String name="hgdhdfbjdbfjdfb";
+//                String desc="bvchvbhcvbhcbnc nhvbchb bcbvhbcn bbfhdbjsnchjsbdbcbsjdbcjdbfbhvhjbfdfbvhbdv";
+//                courseDescription.obj.add(new CourseDetail(name,desc));
+//                Intent intent=new Intent();
+//                intent.setClass(StudentListRecyclerView.this,ExpandTextView.class);
+//                intent.putExtra("Course_Description", courseDescription);
+//                startActivity(intent);
 
                 Log.i("UserNames", UserNames);
-                final Call<CourseDescription> course_description = ApiClient.getInterface().getDetails(UserNames);
-                course_description.enqueue(new Callback<CourseDescription>() {
-                    @Override
-                    public void onResponse(Call<CourseDescription> call, Response<CourseDescription> response) {
-                        if (response.isSuccessful()) {
-                            CourseDescription courseDescription = response.body();
-                            Log.i("CourseDetails", courseDescription.toString());
 
-                            Intent intent=new Intent();
-                            intent.setClass(StudentListRecyclerView.this,ExpandTextView.class);
-                            intent.putExtra("Course_Description", courseDescription);
-                            startActivity(intent);
-                        }
-                        else {
+                Call<List<CourseDescription>> Course_Description = ApiClient.getInterface().getDetails("HimanshuS1995");
+                Course_Description.enqueue(new Callback<List<CourseDescription>>() {
+                    @Override
+                    public void onResponse(Call<List<CourseDescription>> call, Response<List<CourseDescription>> response) {
+                        if (response.isSuccessful()) {
+                            details = response.body();
+                            Log.i("Details", details.get(0).desc.toString());
+                        } else {
                             Toast.makeText(StudentListRecyclerView.this, response.code() + response.message(), Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<CourseDescription> call, Throwable t) {
+                    public void onFailure(Call<List<CourseDescription>> call, Throwable t) {
                         Toast.makeText(StudentListRecyclerView.this, "You are not connected to Internet", Toast.LENGTH_LONG).show();
                     }
                 });
+
+
+                Intent intent1 = new Intent();
+                intent1.setClass(StudentListRecyclerView.this, ExpandTextView.class);
+                //intent1.putExtra("Object",new Gson().toJson(details));
+                intent1.putExtra("Object", (Serializable) details);
+                startActivity(intent1);
                 DismissProgressDialog();
             }
         });

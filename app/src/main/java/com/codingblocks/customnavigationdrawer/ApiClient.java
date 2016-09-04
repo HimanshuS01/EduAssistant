@@ -19,7 +19,7 @@ public class ApiClient {
             //.create();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://code-and-counter.herokuapp.com")
+                    .baseUrl("http://code-and-counter.herokuapp.com")
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
