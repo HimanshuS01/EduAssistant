@@ -13,7 +13,7 @@
         expandableTextView:maxCollapsedLines="2">
 
         <TextView
-            android:id="@id/expandable_text"
+            android:id="@+id/expandable_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -22,7 +22,7 @@
             android:textSize="16sp" />
 
         <ImageButton
-            android:id="@id/expand_collapse"
+            android:id="@+id/expand_collapse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
