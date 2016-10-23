@@ -12,8 +12,6 @@ import retrofit2.http.Url;
  */
 public interface ApiInterface {
 
-//    String usernames=StudentListRecyclerView.UserNames;
-//    String str=usernames.substring(0,usernames.length()-1);
 
     @GET("topics.php")
     Call<List<CourseDescription>> getDetails(@Query("user") String userNames);

@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -60,6 +61,7 @@ public class StudentListRecyclerView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_student_list_recycler_view);
 
         user_id_list = new ArrayList<>();
@@ -90,14 +92,6 @@ public class StudentListRecyclerView extends AppCompatActivity {
                 .addSubActionView(button2)
                 .attachTo(actionButton)
                 .build();
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +150,11 @@ public class StudentListRecyclerView extends AppCompatActivity {
                 for (int i = 0; i < user_id_list.size(); i++) {
                     UserNames = UserNames + user_id_list.get(i).toString() + ",";
                 }
+                Log.i("User",UserNames);
+                Intent intent1=new Intent();
+                intent1.setClass(StudentListRecyclerView.this,ExpandTextView.class);
+                intent1.putExtra("UserNames",UserNames);
+                startActivity(intent1);
 
 //                CourseDescription courseDescription=new CourseDescription();
 //                String name="hgdhdfbjdbfjdfb";
@@ -166,32 +165,34 @@ public class StudentListRecyclerView extends AppCompatActivity {
 //                intent.putExtra("Course_Description", courseDescription);
 //                startActivity(intent);
 
-                Log.i("UserNames", UserNames);
+//                Log.i("UserNames", UserNames);
 
-                Call<List<CourseDescription>> Course_Description = ApiClient.getInterface().getDetails("HimanshuS1995");
-                Course_Description.enqueue(new Callback<List<CourseDescription>>() {
-                    @Override
-                    public void onResponse(Call<List<CourseDescription>> call, Response<List<CourseDescription>> response) {
-                        if (response.isSuccessful()) {
-                            details = response.body();
-                            Log.i("Details", details.get(0).desc.toString());
-                        } else {
-                            Toast.makeText(StudentListRecyclerView.this, response.code() + response.message(), Toast.LENGTH_LONG).show();
-                        }
-                    }
+//                Call<List<CourseDescription>> Course_Description = ApiClient.getInterface().getDetails("HimanshuS1995");
+//                Course_Description.enqueue(new Callback<List<CourseDescription>>() {
+//                    @Override
+//                    public void onResponse(Call<List<CourseDescription>> call, Response<List<CourseDescription>> response) {
+//                        if (response.isSuccessful()) {
+//                            details = response.body();
+//                            Log.i("Details", details.get(0).desc.toString());
+//                        } else {
+//                            Toast.makeText(StudentListRecyclerView.this, response.code() + response.message(), Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<CourseDescription>> call, Throwable t) {
+//                        Toast.makeText(StudentListRecyclerView.this, "You are not connected to Internet", Toast.LENGTH_LONG).show();
+//                    }
+//                });
 
-                    @Override
-                    public void onFailure(Call<List<CourseDescription>> call, Throwable t) {
-                        Toast.makeText(StudentListRecyclerView.this, "You are not connected to Internet", Toast.LENGTH_LONG).show();
-                    }
-                });
 
-
-                Intent intent1 = new Intent();
-                intent1.setClass(StudentListRecyclerView.this, ExpandTextView.class);
-                //intent1.putExtra("Object",new Gson().toJson(details));
-                intent1.putExtra("Object", (Serializable) details);
-                startActivity(intent1);
+//                String str=new Gson().toJson(details);
+//                Log.i("abc",str);
+//                Intent intent1 = new Intent();
+//                intent1.setClass(StudentListRecyclerView.this, ExpandTextView.class);
+////                intent1.putExtra("Object", new Gson().toJson(details));
+//                intent1.putExtra("Object", (Serializable) details);
+//                startActivity(intent1);
                 DismissProgressDialog();
             }
         });

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +22,9 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
 
     Context context;
     LayoutInflater inflater;
-    List<CourseDescription> courseDetail;
+    ArrayList<String> courseDetail;
 
-    public ExpandableTvRecyclerAdapter(ExpandTextView context, List<CourseDescription> courseDescription) {
+    public ExpandableTvRecyclerAdapter(ExpandTextView context, ArrayList<String> courseDescription) {
         this.context=context;
         inflater=LayoutInflater.from(context);
         this.courseDetail=courseDescription;
@@ -39,8 +40,10 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
 
-        Log.i("ABC",courseDetail.get(position).getDesc().toString());
-        holder.expandableTextView.setText(courseDetail.get(position).getName()+"\n"+courseDetail.get(position).getDesc());
+//        Log.i("ABC",courseDetail.get(position).getDesc().toString());
+        holder.expandableTextView.setText(courseDetail.get(position).toString());
+
+//        holder.expandableTextView.setText(courseDetail.get(position).getName() + "\n" + courseDetail.get(position).getDesc());
 //        holder.expandableTextView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -62,7 +65,6 @@ public class ExpandableTvRecyclerAdapter extends RecyclerView.Adapter<Expandable
             int position = vholder.getPosition();
 
             Toast.makeText(context, "This is position " + position, Toast.LENGTH_LONG).show();
-
         }
     };
 
