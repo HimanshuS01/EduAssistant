@@ -33,8 +33,9 @@ public class StudentsInterestList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
+//        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_expand_text_view);
+        ShowProgressDialog();
         setTitle("Students Interest List");
         Intent intent = getIntent();
         String user_names = intent.getStringExtra("UserNames");
@@ -50,33 +51,12 @@ public class StudentsInterestList extends AppCompatActivity {
                     List<CourseDescription> details = response.body();
                     for (int i = 0; i < details.size(); i++) {
                         dataList.add(details.get(i).getName());
-                        Log.i("Details", response.body().toString());
+                        Log.i("Details", details.get(i).getName());
                     }
 
                     //Log.i("Details", details.get(i).toString());
                 }
 
-//                else {
-//                    dataList.add("Api 4");
-//                    dataList.add("CSS 3");
-//                    dataList.add("jQuery 2");
-//                    dataList.add("Server 2");
-//                    dataList.add("App 2");
-//                    dataList.add("Graphics 1");
-//                    dataList.add("AJAX 1");
-//                    dataList.add("Bootstrap 1");
-//                    dataList.add("iOS 1");
-//
-//                    adapter = new ArrayAdapter<String>(StudentsInterestList.this, android.R.layout.simple_list_item_1, dataList);
-//                    course_details.setAdapter(adapter);//After this step you should be able to see the data in your list view.
-//
-//                    List<CourseDescription> details = response.body();
-//                    for (int i = 0; i < details.size(); i++) {
-//                        dataList.add(details.get(i).getName());
-//
-//                    }
-//                    Log.i("Details", details.get(0).desc.toString());
-//                }
 
                 else {
                     Toast.makeText(StudentsInterestList.this, response.code() + response.message(), Toast.LENGTH_LONG).show();
@@ -95,30 +75,7 @@ public class StudentsInterestList extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(StudentsInterestList.this, android.R.layout.simple_list_item_1, dataList);
         course_details.setAdapter(adapter);//After this step you should be able to see the data in your list view.
 
-//        adapter = new ArrayAdapter<String>(StudentsInterestList.this, android.R.layout.simple_list_item_1, dataList);
-//        course_details.setAdapter(adapter);//After this step you should be able to see the data in your list view.
-
-//        String str=intent.getStringExtra("Object");
-//        Log.i("abc",str);
-//        Gson gson=new Gson();
-//        JSONObject obj = null;
-//        try {
-//            obj=new JSONObject(str);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ArrayList<String> arr=new ArrayList<>();
-//        Iterator iter=obj.keys();
-//        while(iter.hasNext()){
-//            String key= (String) iter.next();
-//            try {
-//                arr.add(obj.getString(key));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        List<CourseDescription> courseDescription= (List<CourseDescription>) gson.fromJson(str,StudentListRecyclerView.class);
+//        List<CourseDescription> courseDescription= (List<CourseDescription>) gson.fromJson(str,StudentNamesList.class);
 //        List<CourseDescription> courseDescription= (List<CourseDescription>) intent.getSerializableExtra("Object");
 //        Log.i("StudentsInterestList",courseDescription.get(0).getDesc().toString());
 //        adapter = new ExpandableTvRecyclerAdapter(this, arr);
@@ -126,6 +83,16 @@ public class StudentsInterestList extends AppCompatActivity {
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setAdapter(adapter);
+    }
+
+    private void ShowProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(StudentsInterestList.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.setMessage("Analysing common interest of student..");
+        progressDialog.show();
     }
 
     private void DismissProgressDialog() {

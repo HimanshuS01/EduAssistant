@@ -7,9 +7,12 @@ public class BatchModel {
     int id;
     String batch_name;
 
-    public BatchModel(int id,String batch_name)
-    {
+    public BatchModel(int id,String batch_name) {
         this.id=id;
+        this.batch_name = batch_name;
+    }
+
+    public BatchModel(String batch_name){
         this.batch_name=batch_name;
     }
 

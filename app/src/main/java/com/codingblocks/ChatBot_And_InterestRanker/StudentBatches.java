@@ -6,7 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.BatchTable;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.MyDatabase;
+import com.codingblocks.ChatBot_And_InterestRanker.DBMS.StudentTable;
 import com.codingblocks.customnavigationdrawer.R;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
@@ -29,14 +31,11 @@ public class StudentBatches extends AppCompatActivity {
     String m_Text;
     ListView batches_list_view;
     List<String> dataList1;
-    List<String> dataList2;
     ArrayAdapter<String> adapter;
     BatchModel batchModel;
     static int batch_count = 0;
+    EditText editText;
 
-//    public StudentBatches() {
-//        Required empty public constructor
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +43,8 @@ public class StudentBatches extends AppCompatActivity {
         setContentView(R.layout.fragment_batches);
         setTitle("Add Batch Name");
         batches_list_view = (ListView) findViewById(R.id.Batches_List_View);
+
         dataList1 = new ArrayList<>();
-        dataList2 = new ArrayList<>();
 
         final SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getReadableDatabase();
         ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
@@ -53,11 +52,10 @@ public class StudentBatches extends AppCompatActivity {
         if (batches_list == null) {
 
         } else {
-            dataList1 = new ArrayList<>();
             for (int i = 0; i < batches_list.size(); i++) {
-                dataList1.add(batches_list.get(i).getBatch_name());
+                dataList1.add(batches_list.get(i).getId() + " " + batches_list.get(i).getBatch_name());
             }
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList1);
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList1);
             batches_list_view.setAdapter(adapter);
         }
 
@@ -70,31 +68,33 @@ public class StudentBatches extends AppCompatActivity {
             public void onClick(View view) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(StudentBatches.this);
-                builder.setTitle("Add new batch");
 
-                // Set up the input
-                final EditText input = new EditText(StudentBatches.this);
+                LayoutInflater inflater = StudentBatches.this.getLayoutInflater();
+                View view1=inflater.inflate(R.layout.new_batch_alert_dialog,null);
+                builder.setView(view1);
+                editText = (EditText) view1.findViewById(R.id.id_BatchName);
 
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setHint("Batch Name");
-                builder.setView(input);
-
-                // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        m_Text = input.getText().toString();
-                        dataList2.add(m_Text);
-                        adapter = new ArrayAdapter<>(StudentBatches.this, android.R.layout.simple_list_item_1, dataList2);
-                        batches_list_view.setAdapter(adapter);//After this step you should be able to see the data in your list view.
-                        batchModel = new BatchModel(batch_count, m_Text);
-                        batch_count++;
+
+                        m_Text = editText.getText().toString();
+                        dataList1.add(m_Text);
+                        adapter.notifyDataSetChanged();
+
+                        //adapter = new ArrayAdapter<List<String>>(StudentBatches.this, android.R.layout.simple_list_item_1, dataList1);
+                        //batches_list_view.setAdapter(adapter);//After this step you should be able to see the data in your list view.
+
+                        batchModel = new BatchModel(m_Text);
+                        //batchModel = new BatchModel(m_Text);
+                        //batch_count++;
+
                         SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getWritableDatabase();
                         BatchTable.save(db, batchModel);
                         db.close();
                     }
                 });
+
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -115,10 +115,15 @@ public class StudentBatches extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getWritableDatabase();
-                        BatchTable.deleteById(db, position);
-                        dataList2.remove(dataList2.get(position));
+
+                        dataList1.remove(dataList1.get(position));
                         adapter.notifyDataSetChanged();
+
+                        final SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getWritableDatabase();
+                        BatchTable.deleteById(db, position+1);
+
+//                        SQLiteDatabase db2=MyDatabase.getInstance(new StudentNamesList()).getWritableDatabase();
+//                        StudentTable.deleteById(db2,position);
                     }
                 });
                 builder.create().show();
@@ -129,122 +134,13 @@ public class StudentBatches extends AppCompatActivity {
         batches_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.i("Batch_ID_InBatch",position+"");
                 Intent intent = new Intent();
-                intent.setClass(StudentBatches.this, StudentListRecyclerView.class);
+                intent.setClass(StudentBatches.this, StudentNamesList.class);
                 intent.putExtra("Batch_ID", position);
                 startActivity(intent);
             }
         });
-        // Inflate the layout for this fragment
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.fragment_batches, container, false);
-//
-//        batches_list_view = (ListView) rootView.findViewById(R.id.Batches_List_View);
-//        dataList1 = new ArrayList<>();
-//        dataList2 = new ArrayList<>();
-//
-//        final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getReadableDatabase();
-//        ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
-//        db.close();
-//        if (batches_list == null) {
-//
-//        } else {
-//            dataList1 = new ArrayList<>();
-//            for (int i = 0; i < batches_list.size(); i++) {
-//                dataList1.add(batches_list.get(i).getBatch_name());
-//            }
-//            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList1);
-//            batches_list_view.setAdapter(adapter);
-//        }
-//
-//        FloatingActionButton fab = new FloatingActionButton.Builder(getActivity())
-//                .setBackgroundDrawable(R.drawable.fab)
-//                .build();
-//
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                builder.setTitle("Add new batch");
-//
-//                // Set up the input
-//                final EditText input = new EditText(getActivity());
-//
-//                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-//                input.setInputType(InputType.TYPE_CLASS_TEXT);
-//                input.setHint("Batch Name");
-//                builder.setView(input);
-//
-//                // Set up the buttons
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        m_Text = input.getText().toString();
-//                        dataList2.add(m_Text);
-//                        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, dataList2);
-//                        batches_list_view.setAdapter(adapter);//After this step you should be able to see the data in your list view.
-//                        batchModel = new BatchModel(batch_count, m_Text);
-//                        batch_count++;
-//                        SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getWritableDatabase();
-//                        BatchTable.save(db, batchModel);
-//                        db.close();
-//                    }
-//                });
-//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//                builder.show();
-//            }
-//        });
-//
-//        batches_list_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
-//                builder.setTitle("Delete");
-//                builder.setMessage("Are you sure you want to delete it?");
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        final SQLiteDatabase db = MyDatabase.getInstance(getActivity()).getWritableDatabase();
-//                        BatchTable.deleteById(db, position);
-//                        dataList2.remove(dataList2.get(position));
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
-//                builder.create().show();
-//                return true;
-//            }
-//        });
-//
-//        batches_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent();
-//                intent.setClass(getActivity(), StudentListRecyclerView.class);
-//                intent.putExtra("Batch_ID", position);
-//                startActivity(intent);
-//            }
-//        });
-//        // Inflate the layout for this fragment
-//        return rootView;
-//    }
-
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//    }
 }

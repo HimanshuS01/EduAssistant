@@ -18,14 +18,14 @@ import java.util.ArrayList;
  * Created by championswimmer on 30/12/15.
  */
 public class StudentTable {
-    public static final String TABLE_NAME = "student";
+    public static final String TABLE_NAME = "Student";
 
     public static final String ID = "student_id";
 
     public static final String STUDENT_NAME = "student_name";
 
-
     public static final String USER_NAME = "user_name";
+
     public static final String BATCH_ID = "batch_id";
 
     public static final String[] PROJECTION =
@@ -33,30 +33,32 @@ public class StudentTable {
 
     public static final String CMD_CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( "
-                    + ID + " INTEGER PRIMARY KEY , "
-
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , "
                     + STUDENT_NAME + " TEXT , "
                     + USER_NAME + " TEXT , "
-                    + BATCH_ID + " REFERENCES " + BatchTable.TABLE_NAME + " ON DELETE CASCADE ON UPDATE CASCADE"
+                    + BATCH_ID + " INTEGER "
                     + " );";
 
 
     public static ArrayList<StudentModel> getByArg(SQLiteDatabase db, int id) {
         Cursor c = db.query(
+                true,
                 StudentTable.TABLE_NAME,
                 StudentTable.PROJECTION,
+                BATCH_ID+" = ?",
+                new String[]{String.valueOf(id)},
+                //null,
+                //null,
                 null,
                 null,
-                null,
-                null,
-                null
+                null,null
         );
         //BATCH_ID+" = ?"
         // new String[]{String.valueOf(id)}
-        Log.i("sahin", c.getCount() + "");
+
+        Log.i("DatabaseContentCount", c.getCount() + "");
 
         ArrayList<StudentModel> students = new ArrayList<>();
-        //c.moveToFirst();
         while (c.moveToNext()) {
             students.add(
                     new StudentModel(
@@ -80,11 +82,7 @@ public class StudentTable {
         refuel row is also deleted.
          */
         try {
-            return db.delete(
-                    TABLE_NAME,
-                    ID + "=" + id,
-                    null
-            );
+            return db.delete(TABLE_NAME, ID + "=" + id, null);
         } catch (NullPointerException e) {
             e.printStackTrace();
             return 0;
@@ -93,19 +91,19 @@ public class StudentTable {
 
 
     public static long save(SQLiteDatabase db, StudentModel student) {
+
         ContentValues cv = new ContentValues();
-        //Log.i("Details", student.getId() + " " + student.getStudent_name() + " " + student.getBatch_id() + " " + student.getUser_name());
-        cv.put(ID, student.getId());
+        Log.i("StudentDetails", student.getStudent_name() + " " + student.getUser_name() + " " + student.getBatch_id());
+
         cv.put(STUDENT_NAME, student.getStudent_name());
-        cv.put(BATCH_ID, student.getBatch_id());
         cv.put(USER_NAME, student.getUser_name());
-        //Log.i("himand", cv.size() + "");
-        long result = db.insert(
-                TABLE_NAME,
-                null,
-                cv
-        );
-        Log.e("dj", "" + result);
+        cv.put(BATCH_ID, student.getBatch_id());
+
+        //Log.i("himanshu", cv.size() + "");
+
+        long result = db.insert(TABLE_NAME, null, cv);
+
+        Log.e("Result After Inserting", "" + result);
         return result;
     }
 
