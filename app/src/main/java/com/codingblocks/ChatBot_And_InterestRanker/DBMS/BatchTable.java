@@ -52,12 +52,17 @@ public class BatchTable {
 
     public static int deleteById(SQLiteDatabase db, int id) {
         try {
-            return db.delete(TABLE_NAME, ID + "=" + id, null);
+            int result = db.delete(TABLE_NAME, ID + "=" + id, null);
+
+            db.execSQL("UPDATE " + TABLE_NAME + " set " + ID + " = (batch_id-1) WHERE " + BatchTable.ID + " > " + id);
+
+            db.delete("SQLITE_SEQUENCE","NAME = ?",new String[]{TABLE_NAME});
+
+            return result;
         } catch (NullPointerException e) {
             e.printStackTrace();
             return 0;
         }
-
     }
 
     public static long save(SQLiteDatabase db, BatchModel batch) {

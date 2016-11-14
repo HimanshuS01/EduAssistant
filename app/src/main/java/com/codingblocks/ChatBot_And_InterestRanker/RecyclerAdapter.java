@@ -53,8 +53,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         holder.tv1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-
             public boolean onLongClick(View v) {
+
                 final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
                 builder.setTitle("Delete");
                 builder.setMessage("Are you sure you want to delete it?");
@@ -62,13 +62,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         student_names_list.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, student_names_list.size());
 
-//                        final SQLiteDatabase db = MyDatabase.getInstance(context).getWritableDatabase();
-//                        StudentTable.deleteById(db, position+1);
+                        final SQLiteDatabase db = MyDatabase.getInstance(StudentNamesList.m_context).getWritableDatabase();
+                        StudentTable.deleteByStudentName(db, holder.tv1.getText().toString());
                     }
+
                 });
 
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

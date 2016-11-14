@@ -1,5 +1,6 @@
 package com.codingblocks.ChatBot_And_InterestRanker;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,7 +34,6 @@ public class StudentBatches extends AppCompatActivity {
     List<String> dataList1;
     ArrayAdapter<String> adapter;
     BatchModel batchModel;
-    static int batch_count = 0;
     EditText editText;
 
 
@@ -47,7 +47,7 @@ public class StudentBatches extends AppCompatActivity {
         dataList1 = new ArrayList<>();
 
         final SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getReadableDatabase();
-        ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
+        final ArrayList<BatchModel> batches_list = BatchTable.getByArg(db);
         db.close();
         if (batches_list == null) {
 
@@ -70,7 +70,7 @@ public class StudentBatches extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(StudentBatches.this);
 
                 LayoutInflater inflater = StudentBatches.this.getLayoutInflater();
-                View view1=inflater.inflate(R.layout.new_batch_alert_dialog,null);
+                View view1 = inflater.inflate(R.layout.new_batch_alert_dialog, null);
                 builder.setView(view1);
                 editText = (EditText) view1.findViewById(R.id.id_BatchName);
 
@@ -112,18 +112,23 @@ public class StudentBatches extends AppCompatActivity {
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StudentBatches.this);
                 builder.setTitle("Delete");
                 builder.setMessage("Are you sure you want to delete it?");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                android.app.AlertDialog.Builder ok = builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
 
                         dataList1.remove(dataList1.get(position));
                         adapter.notifyDataSetChanged();
 
                         final SQLiteDatabase db = MyDatabase.getInstance(StudentBatches.this).getWritableDatabase();
-                        BatchTable.deleteById(db, position+1);
+                        BatchTable.deleteById(db, position + 1);
 
-//                        SQLiteDatabase db2=MyDatabase.getInstance(new StudentNamesList()).getWritableDatabase();
-//                        StudentTable.deleteById(db2,position);
+                        SQLiteDatabase db1 = MyDatabase.getInstance(StudentNamesList.m_context).getWritableDatabase();
+                        StudentTable.deleteByBatchName(db1, batches_list.get(position).getBatch_name()/*adapter.getItem(position).toString()*/);
+
+                        db.close();
+                        db1.close();
+
                     }
                 });
                 builder.create().show();
@@ -135,10 +140,10 @@ public class StudentBatches extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.i("Batch_ID_InBatch",position+"");
+                Log.i("Batch_ID_InBatch", position + "");
                 Intent intent = new Intent();
                 intent.setClass(StudentBatches.this, StudentNamesList.class);
-                intent.putExtra("Batch_ID", position);
+                intent.putExtra("Batch_Name", batches_list.get(position).getBatch_name()/*adapter.getItem(position).toString()*/);
                 startActivity(intent);
             }
         });

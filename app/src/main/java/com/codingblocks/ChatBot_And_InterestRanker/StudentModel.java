@@ -6,23 +6,23 @@ package com.codingblocks.ChatBot_And_InterestRanker;
 public class StudentModel {
     int id;
     String student_name;
-    int batch_id;
+    String batch_name;
     String user_name;
 
 
-    public StudentModel(String student_name,String user_name, int batch_id)
+    public StudentModel(String student_name,String user_name, String batch_name)
     {
         this.student_name=student_name;
         this.user_name=user_name;
-        this.batch_id=batch_id;
+        this.batch_name=batch_name;
     }
 
-    public StudentModel(int id,String student_name,String user_name, int batch_id)
+    public StudentModel(int id,String student_name,String user_name, String batch_name)
     {
         this.id=id;
         this.student_name=student_name;
         this.user_name=user_name;
-        this.batch_id=batch_id;
+        this.batch_name=batch_name;
     }
     public String getStudent_name() {
         return student_name;
@@ -32,12 +32,12 @@ public class StudentModel {
         this.student_name = student_name;
     }
 
-    public int getBatch_id() {
-        return batch_id;
+    public String getBatch_name() {
+        return batch_name;
     }
 
-    public void setBatch_id(int batch_id) {
-        this.batch_id = batch_id;
+    public void setBatch_name(int batch_id) {
+        this.batch_name = batch_name;
     }
 
     public String getUser_name() {

@@ -1,7 +1,9 @@
 package com.codingblocks.ChatBot_And_InterestRanker;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,10 +42,16 @@ public class StudentNamesList extends AppCompatActivity {
     List<String> student_names;
     List<String> user_id_list;
     RecyclerAdapter adapter;
-    int batch_id;
+    //int batch_id;
+    String batch_name;
     ProgressDialog progressDialog;
     public String UserNames;
+    public static  Context m_context;
 
+
+    public StudentNamesList() {
+        m_context=StudentNamesList.this;
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -56,8 +64,8 @@ public class StudentNamesList extends AppCompatActivity {
         user_id_list = new ArrayList<>();
 
         final Intent intent = getIntent();
-        batch_id = intent.getIntExtra("Batch_ID", 0);
-        Log.i("BatchID_inStudentNames", batch_id + "");
+        batch_name = intent.getStringExtra("Batch_Name");
+        Log.i("BatchID_inStudentNames", batch_name + "");
         refresh();
 
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
@@ -111,7 +119,7 @@ public class StudentNamesList extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        studentModel = new StudentModel(user_name.getText().toString(), user_id.getText().toString(), batch_id);
+                        studentModel = new StudentModel(user_name.getText().toString(), user_id.getText().toString(), batch_name);
                         final SQLiteDatabase db = MyDatabase.getInstance(StudentNamesList.this).getWritableDatabase();
                         StudentTable.save(db, studentModel);
                         db.close();
@@ -149,6 +157,13 @@ public class StudentNamesList extends AppCompatActivity {
         });
     }
 
+//    public void updateStudentNamesDatabase(int batch_ID){
+//
+//        SQLiteDatabase db1 = MyDatabase.getInstance(this).getWritableDatabase();
+//        StudentTable.deleteById(db1,batch_ID);
+//        db1.close();
+//
+//    }
     private void ShowProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(StudentNamesList.this);
@@ -168,7 +183,7 @@ public class StudentNamesList extends AppCompatActivity {
     private void refresh() {
         student_names = new ArrayList<>();
         final SQLiteDatabase db = MyDatabase.getInstance(StudentNamesList.this).getReadableDatabase();
-        student_list = StudentTable.getByArg(db, batch_id);
+        student_list = StudentTable.getByArg(db, batch_name);
         if (student_list == null) {
 
         } else {
