@@ -120,7 +120,6 @@ public class StudentNamesList extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
                         studentModel = new StudentModel(user_name.getText().toString(), user_id.getText().toString(), batch_name);
                         final SQLiteDatabase db = MyDatabase.getInstance(StudentNamesList.this).getWritableDatabase();
                         StudentTable.save(db, studentModel);

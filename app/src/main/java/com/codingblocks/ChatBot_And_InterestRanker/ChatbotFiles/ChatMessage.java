@@ -9,6 +9,7 @@ public class ChatMessage {
     private String message;
     private Long userId;
     private String dateTime;
+    private String url;
 
     public long getId() {
         return id;
@@ -27,6 +28,12 @@ public class ChatMessage {
     }
     public void setMessage(String message) {
         this.message = message;
+    }
+    public void seturl(String message) {
+        this.url = message;
+    }
+    public String geturl() {
+        return url;
     }
     public long getUserId() {
         return userId;

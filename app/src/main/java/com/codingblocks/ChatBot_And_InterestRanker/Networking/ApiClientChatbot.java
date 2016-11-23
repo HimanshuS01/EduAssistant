@@ -15,6 +15,8 @@ public class ApiClientChatbot {
     public static ApiInterfaceChatbot getInterface() {
         if (mService == null) {
             Gson gson = new GsonBuilder().create();
+            //.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC)
+            //.create();
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://edu-chatbot.herokuapp.com/")
@@ -26,3 +28,4 @@ public class ApiClientChatbot {
         return mService;
     }
 }
+

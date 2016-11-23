@@ -1,5 +1,6 @@
 package com.codingblocks.ChatBot_And_InterestRanker.ChatbotFiles;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
@@ -65,7 +66,7 @@ public class ChatAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        boolean myMsg = chatMessage.getIsme() ;//Just a dummy check
+        boolean myMsg = chatMessage.getIsme();//Just a dummy check
         //to simulate whether it me or other sender
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
@@ -100,9 +101,7 @@ public class ChatAdapter extends BaseAdapter {
             layoutParams.gravity = Gravity.RIGHT;
             holder.txtMessage.setLayoutParams(layoutParams);
 
-//            layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
             layoutParams.gravity = Gravity.RIGHT;
- //           holder.txtInfo.setLayoutParams(layoutParams);
         } else {
             holder.contentWithBG.setBackgroundResource(R.drawable.out_message_bg);
 
@@ -120,9 +119,6 @@ public class ChatAdapter extends BaseAdapter {
             layoutParams.gravity = Gravity.LEFT;
             holder.txtMessage.setLayoutParams(layoutParams);
 
-//            layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
-//            layoutParams.gravity = Gravity.LEFT;
-//            holder.txtInfo.setLayoutParams(layoutParams);
         }
     }
 
