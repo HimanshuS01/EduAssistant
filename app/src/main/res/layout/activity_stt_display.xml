@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
 
-    tools:context="com.codingblocks.customnavigationdrawer.com.codingblocks.ChatBot_And_InterestRanker.SpeechToText.SttDisplay"
+    tools:context="com.codingblocks.ChatBot_And_InterestRanker.com.codingblocks.ChatBot_And_InterestRanker.SpeechToText.SttDisplay"
     android:background="#9e9b9b">
 
     <TextView

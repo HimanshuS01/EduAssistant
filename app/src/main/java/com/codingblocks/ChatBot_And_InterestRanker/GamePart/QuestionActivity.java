@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.codingblocks.customnavigationdrawer.R;
+import com.codingblocks.ChatBot_And_InterestRanker.R;
 
 import java.util.Collections;
 import java.util.List;

@@ -3,7 +3,6 @@ package com.codingblocks.ChatBot_And_InterestRanker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codingblocks.ChatBot_And_InterestRanker.DBMS.BatchTable;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.MyDatabase;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.StudentTable;
-import com.codingblocks.customnavigationdrawer.R;
 
 import java.util.List;
 

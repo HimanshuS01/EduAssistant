@@ -1,4 +1,4 @@
-package com.codingblocks.customnavigationdrawer;
+package com.codingblocks.ChatBot_And_InterestRanker;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

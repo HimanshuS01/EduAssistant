@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.codingblocks.customnavigationdrawer.R;
+import com.codingblocks.ChatBot_And_InterestRanker.R;
 
 
 public class AnswerActivity extends Activity {

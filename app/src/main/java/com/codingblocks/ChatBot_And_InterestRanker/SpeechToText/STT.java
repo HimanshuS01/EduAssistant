@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.codingblocks.customnavigationdrawer.R;
+import com.codingblocks.ChatBot_And_InterestRanker.R;
 
 import java.util.ArrayList;
 import java.util.Locale;

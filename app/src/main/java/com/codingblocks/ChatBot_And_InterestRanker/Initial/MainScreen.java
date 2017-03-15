@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.codingblocks.ChatBot_And_InterestRanker.StudentBatches;
 import com.codingblocks.ChatBot_And_InterestRanker.ChatbotFiles.ChatActivity;
-import com.codingblocks.customnavigationdrawer.R;
+import com.codingblocks.ChatBot_And_InterestRanker.R;
 
 public class MainScreen extends AppCompatActivity {
 

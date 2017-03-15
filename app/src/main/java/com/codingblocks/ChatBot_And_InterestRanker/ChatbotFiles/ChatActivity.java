@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.codingblocks.ChatBot_And_InterestRanker.GamePart.GameInitActivity;
 import com.codingblocks.ChatBot_And_InterestRanker.Networking.ApiClientChatbot;
-import com.codingblocks.customnavigationdrawer.R;
+import com.codingblocks.ChatBot_And_InterestRanker.R;
 import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.text.DateFormat;

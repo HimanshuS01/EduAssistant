@@ -1,6 +1,5 @@
 package com.codingblocks.ChatBot_And_InterestRanker;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.BatchTable;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.MyDatabase;
 import com.codingblocks.ChatBot_And_InterestRanker.DBMS.StudentTable;
-import com.codingblocks.customnavigationdrawer.R;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
