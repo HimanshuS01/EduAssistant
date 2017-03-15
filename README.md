@@ -7,15 +7,24 @@ TechnologyUsed:HP Haven On Demand API, Wikipedia API, Google YouTube API, Pandor
 
 ## Screenshots
 <p align="center">
-  <img src="images/movieplate1.jpg" width="250"/>&nbsp;
-  <img src="images/movieplate2.jpg" width="250"/>&nbsp;
+  <img src="images/ss1.png" width="250"/>&nbsp;
+  <img src="images/ss2.png" width="250"/>&nbsp;
+  <img src="images/ss3.png" width="250"/>
 </p>
 <p align="center">
-  <img src="images/movieplate4.jpg" width="250"/>&nbsp;
-  <img src="images/movieplate5.jpg" width="250"/>&nbsp;
+  <img src="images/ss4.png" width="250"/>&nbsp;
+  <img src="images/ss5.png" width="250"/>&nbsp;
+  <img src="images/ss6.png" width="250"/>
 </p>
 <p align="center">
-  <img src="images/movieplate7.jpg" width="250"/>&nbsp;
-  <img src="images/movieplate8.jpg" width="250"/>&nbsp;
-  <img src="images/movieplate9.jpg" width="250"/>
+  <img src="images/ss7.png" width="250"/>&nbsp;
+  <img src="images/ss8.png" width="250"/>&nbsp;
+  <img src="images/ss9.png" width="250"/>
 </p>
+<p align="center">
+  <img src="images/ss10.png" width="250"/>&nbsp;
+  <img src="images/ss11.png" width="250"/>&nbsp;
+  <img src="images/ss12.png" width="250"/>&nbsp;
+  <img src="images/ss13.png" width="250"/>
+</p>
+
