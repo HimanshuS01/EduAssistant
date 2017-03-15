@@ -7,24 +7,24 @@ TechnologyUsed:HP Haven On Demand API, Wikipedia API, Google YouTube API, Pandor
 
 ## Screenshots
 <p align="center">
-  <img src="images/ss1.png" width="250"/>&nbsp;
-  <img src="images/ss2.png" width="250"/>&nbsp;
-  <img src="images/ss3.png" width="250"/>
+  <img src="images/ss1.jpeg" width="250"/>&nbsp;
+  <img src="images/ss2.jpeg" width="250"/>&nbsp;
+  <img src="images/ss3.jpeg" width="250"/>
 </p>
 <p align="center">
-  <img src="images/ss4.png" width="250"/>&nbsp;
-  <img src="images/ss5.png" width="250"/>&nbsp;
-  <img src="images/ss6.png" width="250"/>
+  <img src="images/ss4.jpeg" width="250"/>&nbsp;
+  <img src="images/ss5.jpeg" width="250"/>&nbsp;
+  <img src="images/ss6.jpeg" width="250"/>
 </p>
 <p align="center">
-  <img src="images/ss7.png" width="250"/>&nbsp;
-  <img src="images/ss8.png" width="250"/>&nbsp;
-  <img src="images/ss9.png" width="250"/>
+  <img src="images/ss7.jpeg" width="250"/>&nbsp;
+  <img src="images/ss8.jpeg" width="250"/>&nbsp;
+  <img src="images/ss9.jpeg" width="250"/>
 </p>
 <p align="center">
-  <img src="images/ss10.png" width="250"/>&nbsp;
-  <img src="images/ss11.png" width="250"/>&nbsp;
-  <img src="images/ss12.png" width="250"/>&nbsp;
-  <img src="images/ss13.png" width="250"/>
+  <img src="images/ss10.jpeg" width="250"/>&nbsp;
+  <img src="images/ss11.jpeg" width="250"/>&nbsp;
+  <img src="images/ss12.jpeg" width="250"/>&nbsp;
+  <img src="images/ss13.jpeg" width="250"/>
 </p>
 
