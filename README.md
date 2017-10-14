@@ -1,4 +1,14 @@
 # EduAssistant
+
+
+<a href="https://play.google.com/store/apps/details?id=com.codingblocks.customnavigationdrawer">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
+</a>
+
+
+
+
 This Android App serves two functionality -
 <li>A smart Chatbot that will answer an user query in most interesting way by showing text,videos ,quiz games etc.</li>
 <li>One can find the most popular topics of interest of the attendees by analysing their Github profile.</li>
