@@ -34,7 +34,7 @@ TechnologyUsed:HP Haven On Demand API, Wikipedia API, Google YouTube API, Pandor
 <p align="center">
   <img src="images/ss10.jpeg" width="250"/>&nbsp;
   <img src="images/ss11.jpeg" width="250"/>&nbsp;
-  <img src="images/ss12.jpeg" width="250"/>&nbsp;
-  <img src="images/ss13.jpeg" width="250"/>
+  <img src="images/ss14.png" width="250"/>&nbsp;
+  <img src="images/ss15.png" width="250"/>&nbsp;
 </p>
 
